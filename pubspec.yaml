@@ -1,6 +1,6 @@
 name: roble_api_database
 description: Cliente HTTP para interactuar con el backend Roble API.
-version: 1.0.2
+version: 1.0.3
 homepage: https://github.com/Arias3/roble_api_database
 repository: https://github.com/Arias3/roble_api_database
 

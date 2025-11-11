@@ -39,126 +39,120 @@ class _RobleExampleAppState extends State<RobleExampleApp> {
     try {
       final email =
           'test_user_${DateTime.now().millisecondsSinceEpoch}@mail.com';
-      _appendLog('➡️ Creando usuario: $email');
+      _appendLog('Creando usuario: $email');
       final res = await db.register(
         email: email,
         password: 'Password123!',
         name: 'Usuario Prueba',
       );
       _lastEmail = email;
-      _appendLog('✅ Usuario creado correctamente: ${res['email']}');
+      _appendLog('Usuario creado correctamente: ${res['email']}');
     } catch (e) {
-      _appendLog('❌ Error creando usuario: $e');
+      _appendLog('Error creando usuario: $e');
     }
   }
 
   Future<void> _loginUser() async {
     if (_lastEmail == null) {
-      _appendLog('⚠️ Primero crea un usuario antes de iniciar sesión.');
+      _appendLog('Primero crea un usuario antes de iniciar sesión.');
       return;
     }
 
     try {
-      _appendLog('➡️ Iniciando sesión con $_lastEmail...');
-      final res = await db.login(
-        email: _lastEmail!,
-        password: 'Password123!',
-      );
+      _appendLog('Iniciando sesión con $_lastEmail...');
+      final res = await db.login(email: _lastEmail!, password: 'Password123!');
       _accessToken = res['accessToken'];
+      // ignore: avoid_print
       print(_accessToken);
       _appendLog(
-          '✅ Sesión iniciada. Token: ${_accessToken?.substring(0, 25)}...');
+        ' Sesión iniciada. Token: ${_accessToken?.substring(0, 25)}...',
+      );
     } catch (e) {
-      _appendLog('❌ Error al iniciar sesión: $e');
+      _appendLog('Error al iniciar sesión: $e');
     }
   }
 
   Future<void> _logoutUser() async {
     if (_accessToken == null) {
-      _appendLog('⚠️ No hay sesión activa para cerrar.');
+      _appendLog('No hay sesión activa para cerrar.');
       return;
     }
 
     try {
-      _appendLog('➡️ Cerrando sesión...');
+      _appendLog('Cerrando sesión...');
       await db.logout(accessToken: _accessToken!);
       _accessToken = null;
-      _appendLog('✅ Sesión cerrada correctamente.');
+      _appendLog(' Sesión cerrada correctamente.');
     } catch (e) {
-      _appendLog('❌ Error al cerrar sesión: $e');
+      _appendLog('Error al cerrar sesión: $e');
     }
   }
 
   Future<void> _createTestTable() async {
     if (_accessToken == null) {
-      _appendLog('⚠️ Debes iniciar sesión antes de crear tablas.');
+      _appendLog('Debes iniciar sesión antes de crear tablas.');
       return;
     }
 
     try {
-      _appendLog('➡️ Creando tabla "usuarios_test"...');
-      await db.createTable(
-        'usuarios_test',
-        [
-          {'name': 'nombre', 'type': 'text'},
-          {'name': 'rol', 'type': 'text'},
-        ],
-      );
-      _appendLog('✅ Tabla creada correctamente.');
+      _appendLog('Creando tabla "usuarios_test"...');
+      await db.createTable('usuarios_test', [
+        {'name': 'nombre', 'type': 'text'},
+        {'name': 'rol', 'type': 'text'},
+      ]);
+      _appendLog(' Tabla creada correctamente.');
     } catch (e) {
-      _appendLog('❌ Error creando tabla: $e');
+      _appendLog('Error creando tabla: $e');
     }
   }
 
   Future<void> _insertIntoTestTable() async {
     if (_accessToken == null) {
-      _appendLog('⚠️ Debes iniciar sesión antes de agregar datos.');
+      _appendLog('Debes iniciar sesión antes de agregar datos.');
       return;
     }
 
     try {
-      _appendLog('➡️ Insertando registro en "usuarios_test"...');
+      _appendLog('Insertando registro en "usuarios_test"...');
       final created = await db.create('usuarios_test', {
         'nombre': 'Carlos',
         'rol': 'tester',
       });
-      _appendLog('✅ Registro agregado: $created');
+      _appendLog(' Registro agregado: $created');
     } catch (e) {
-      _appendLog('❌ Error insertando registro: $e');
+      _appendLog('Error insertando registro: $e');
     }
   }
 
   Future<void> _testCrud() async {
     if (_accessToken == null) {
-      _appendLog('⚠️ Debes iniciar sesión antes de probar CRUD.');
+      _appendLog('Debes iniciar sesión antes de probar CRUD.');
       return;
     }
 
     try {
-      _appendLog('➡️ Creando registro...');
+      _appendLog('Creando registro...');
       final created = await db.create('usuarios_test', {
         'nombre': 'Juan',
         'rol': 'admin',
       });
-      _appendLog('✅ Registro creado: $created');
+      _appendLog(' Registro creado: $created');
 
-      _appendLog('➡️ Leyendo registros...');
+      _appendLog('Leyendo registros...');
       final data = await db.read('usuarios_test');
-      _appendLog('✅ Datos obtenidos: ${data.length} registros');
+      _appendLog(' Datos obtenidos: ${data.length} registros');
 
-      _appendLog('➡️ Actualizando registro...');
-      final updated = await db.update(
-        'usuarios_test',
-        created['_id'],
-        {'rol': 'editor'},
-      );
-      _appendLog('✅ Registro actualizado: $updated');
+      _appendLog('Actualizando registro...');
+      final updated = await db.update('usuarios_test', created['_id'], {
+        'rol': 'editor',
+      });
+      _appendLog(' Registro actualizado: $updated');
 
-      _appendLog('➡️ Eliminando registro...');
+      _appendLog('Eliminando registro...');
       final deleted = await db.delete('usuarios_test', created['_id']);
-      _appendLog('✅ Registro eliminado: $deleted');
+      _appendLog(' Registro eliminado: $deleted');
     } catch (e) {
-      _appendLog('❌ Error en CRUD: $e');
+      _appendLog('Error en CRUD: $e');
     }
   }
 
@@ -204,7 +198,7 @@ class _RobleExampleAppState extends State<RobleExampleApp> {
               const SizedBox(height: 20),
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Text('📜 Log de operaciones:'),
+                child: Text('Log de operaciones:'),
               ),
               const SizedBox(height: 5),
               Expanded(
@@ -217,10 +211,7 @@ class _RobleExampleAppState extends State<RobleExampleApp> {
                   ),
                   child: SingleChildScrollView(
                     reverse: true,
-                    child: Text(
-                      _log,
-                      style: const TextStyle(fontSize: 13),
-                    ),
+                    child: Text(_log, style: const TextStyle(fontSize: 13)),
                   ),
                 ),
               ),

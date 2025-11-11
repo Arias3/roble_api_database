@@ -1,0 +1,17 @@
+name: roble_api_database_example
+description: Ejemplo de uso del paquete roble_api_database
+publish_to: "none"
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # 👇 importante: usa el paquete padre mediante ruta local
+  roble_api_database:
+    path: ../
+
+flutter:
+  uses-material-design: true
